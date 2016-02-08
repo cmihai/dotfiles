@@ -19,6 +19,7 @@ if isdirectory($HOME . '/.vim/bundle/vundle')
     " Ctrl-P plugin
     let g:ctrlp_custom_ignore = {
     \ 'dir': '\v[\/](build|node_modules|venv)$',
+    \ 'file': '\.pyc$'
     \ }
 
     " Python-mode plugin
@@ -75,6 +76,9 @@ if &readonly == 1
     map q :q<CR>
     map <Space> <PageDown>
 endif
+
+" Misc
+set autochdir
 
 " File types
 " au FileType python setlocal textwidth=80
