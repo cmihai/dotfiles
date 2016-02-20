@@ -83,7 +83,10 @@ set autochdir
 set fo+=t
 
 " File types
-au FileType python setlocal textwidth=80
+au FileType python
+            \ setlocal textwidth=80
+au! BufEnter,BufNew *.py
+            \ nnoremap <buffer> <F9> :!flake8 %<CR>
 " au! BufEnter,BufNew *.jinja2
 " au BufEnter,BufNew *.jinja2 setlocal filetype=jinja
 au BufRead,BufNewFile *.md setlocal filetype=markdown
