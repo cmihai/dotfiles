@@ -84,7 +84,7 @@ set fo+=t
 
 " File types
 au FileType python
-            \ setlocal textwidth=80
+            \ setlocal textwidth=79
 au! BufEnter,BufNew *.py
             \ nnoremap <buffer> <F9> :!flake8 %<CR>
 " au! BufEnter,BufNew *.jinja2
