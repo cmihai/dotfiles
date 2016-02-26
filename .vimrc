@@ -82,6 +82,12 @@ endif
 set autochdir
 set fo+=t
 
+function SaveAndQuit()
+    mksession! ~/.vim/session.vim
+    qall
+endfunction
+command QS call SaveAndQuit()
+
 " File types
 au FileType python
             \ setlocal textwidth=79
