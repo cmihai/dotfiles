@@ -13,6 +13,7 @@ if isdirectory($HOME . '/.vim/bundle/vundle')
     Plugin 'klen/python-mode'
     Plugin 'tpope/vim-rsi'
     Plugin 'mileszs/ack.vim'
+    Plugin 'altercation/vim-colors-solarized'
 
     call vundle#end()
 
@@ -31,6 +32,11 @@ if isdirectory($HOME . '/.vim/bundle/vundle')
 
     " Ack plugin
     let g:ack_default_options = " -H --nocolor --nogroup --column"
+
+    " Solarized options
+    syntax enable
+    set background=dark
+    colorscheme solarized
 endif
 
 " Syntax coloring
