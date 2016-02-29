@@ -4,6 +4,13 @@ filetype off
 
 if isdirectory($HOME . '/.vim/bundle/vundle')
     set rtp+=~/.vim/bundle/vundle
+    let vundle=1
+elseif isdirectory($HOME . '/.vim/bundle/Vundle.vim')
+    set rtp+=~/.vim/bundle/Vundle.vim
+    let vundle=1
+endif
+
+if vundle == 1
     call vundle#begin()
 
     Plugin 'pangloss/vim-javascript'
@@ -58,6 +65,7 @@ nnoremap \i :setlocal smartindent!<CR>
 filetype plugin indent on
 
 " Search
+let @/=''
 set hlsearch incsearch
 nnoremap \h :setlocal hlsearch!<CR>
 nnoremap / :setlocal hlsearch<CR>/
