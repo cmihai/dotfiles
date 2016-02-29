@@ -77,6 +77,8 @@ endif
 
 " Mappings
 nnoremap <F5> :%s/\s\+$//g<CR>
+nnoremap ci< ?>?s+1<cr>c/<<cr>
+nnoremap ci> ?>?s+1<cr>c/<<cr>
 inoremap <C-w> <Esc><C-w>
 
 if &readonly == 1
@@ -88,11 +90,11 @@ endif
 set autochdir
 set fo+=t
 
-function SaveAndQuit()
+function! SaveAndQuit()
     mksession! ~/.vim/session.vim
     qall
 endfunction
-command QS call SaveAndQuit()
+command! QS call SaveAndQuit()
 
 " File types
 au FileType python
