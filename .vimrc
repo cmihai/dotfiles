@@ -106,7 +106,8 @@ command! QS call SaveAndQuit()
 
 " File types
 au FileType python
-            \ setlocal textwidth=79
+            \ setlocal textwidth=79 colorcolumn=80 |
+            \ highlight ColorColumn ctermbg=red
 au! BufEnter,BufNew *.py
             \ nnoremap <buffer> <F9> :!flake8 %<CR>
 " au! BufEnter,BufNew *.jinja2
@@ -116,4 +117,4 @@ au BufEnter,BufNew *.js setlocal filetype=javascript
 au! BufEnter,BufNew *.tpl
 au BufEnter,BufNew *.tpl
                    \ setlocal filetype=html syntax=underscore_template |
-                   \ setlocal tabstop=2 shiftwidth=2
+                   \ setlocal tabstop=4 shiftwidth=4
