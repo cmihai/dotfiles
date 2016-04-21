@@ -95,7 +95,7 @@ if &readonly == 1
 endif
 
 " Misc
-set autochdir
+" set autochdir
 set fo+=t
 
 function! SaveAndQuit()
@@ -113,7 +113,9 @@ au! BufEnter,BufNew *.py
 " au! BufEnter,BufNew *.jinja2
 " au BufEnter,BufNew *.jinja2 setlocal filetype=jinja
 au BufRead,BufNewFile *.md setlocal filetype=markdown
-au BufEnter,BufNew *.js setlocal filetype=javascript
+au BufEnter,BufNew *.js
+            \ setlocal filetype=javascript |
+            \ nnoremap <buffer> <F9> :!jshint %<CR>
 au! BufEnter,BufNew *.tpl
 au BufEnter,BufNew *.tpl
                    \ setlocal filetype=html syntax=underscore_template |
