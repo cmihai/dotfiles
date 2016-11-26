@@ -2,6 +2,7 @@
 set nocompatible
 filetype off
 
+let vundle=0
 if isdirectory($HOME . '/.vim/bundle/vundle')
     set rtp+=~/.vim/bundle/vundle
     let vundle=1
