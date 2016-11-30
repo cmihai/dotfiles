@@ -71,6 +71,7 @@ set hlsearch incsearch
 nnoremap \h :setlocal hlsearch!<CR>
 nnoremap / :setlocal hlsearch<CR>/
 nnoremap * :setlocal hlsearch<CR>*
+nnoremap Y y$
 
 " Don't clutter current dir with swapfiles
 if !isdirectory($HOME.'/.vim/swapfiles')
