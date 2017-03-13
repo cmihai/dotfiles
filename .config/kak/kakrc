@@ -1,0 +1,15 @@
+set global indentwidth 4
+map global insert <tab> '    '
+map global insert <backtab> '<a-;><lt>'
+
+# Fuzzy file finder
+def find -allow-override -params 1 -shell-candidates %{
+    find \( -name venv -o -name node_modules -o -name build  -o -name .hg -o -name .git \) -prune -o \
+         -type f ! -name '*.pyc' -print
+} %{ edit %arg{1} }
+
+set global grepcmd "%sh{
+    AG=$(command -v ag)
+    ACK=${AG:-$(command -v ack)}
+    echo ${ACK:-grep -RHn}
+}"
