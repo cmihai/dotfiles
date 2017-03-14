@@ -8,8 +8,14 @@ def find -allow-override -params 1 -shell-candidates %{
          -type f ! -name '*.pyc' -print
 } %{ edit %arg{1} }
 
+# Faster grep
 set global grepcmd "%sh{
     AG=$(command -v ag)
     ACK=${AG:-$(command -v ack)}
     echo ${ACK:-grep -RHn}
 }"
+
+# Python files
+hook -group custom global BufCreate .*\.py %{
+    set buffer lintcmd flake8
+}
