@@ -1,6 +1,7 @@
 set global indentwidth 4
 map global insert <tab> '    '
 map global insert <backtab> '<a-;><lt>'
+map global normal <c-p> ':find '
 
 # Fuzzy file finder
 def find -allow-override -params 1 -shell-candidates %{
