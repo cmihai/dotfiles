@@ -19,4 +19,10 @@ set global grepcmd "%sh{
 # Python files
 hook -group custom global BufCreate .*\.py %{
     set buffer lintcmd flake8
+    map buffer normal <a-\> '<a-i>w:tag <c-r>"<ret>'
+}
+
+hook -group custom global BufCreate .*'.js %{
+    set buffer lintcmd jshint
+    map buffer normal <a-\> '<a-i>w:tag <c-r>"<ret>'
 }
