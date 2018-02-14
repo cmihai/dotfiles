@@ -1,0 +1,4 @@
+escape ^Bb
+hardstatus on
+hardstatus alwayslastline
+hardstatus string "%w"
