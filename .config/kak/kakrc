@@ -1,14 +1,20 @@
 set global indentwidth 4
 map global insert <tab> '    '
-map global insert <backtab> '<a-;><lt>'
+map global insert <s-tab> '<a-;><lt>'
 map global normal <c-p> ':find '
 map global user w '%s +$<ret>d '
 
 # Fuzzy file finder
-def find -allow-override -params 1 -shell-candidates %{
-    find \( -name venv -o -name node_modules -o -name build  -o -name .hg -o -name .git \) -prune -o \
+def find -params 1 -override -shell-script-candidates %{
+    find \( -name venv -o -name node_modules -o -name build  -o -name .hg -o -name .travis -o \
+            -name .git -o -name autom4te.cache -o -name build-aux \) -prune -o \
          -type f ! -name '*.pyc' -print
 } %{ edit %arg{1} }
+
+# Print working directory
+def pwd -params 0 -override %{
+    echo %sh{pwd}
+}
 
 # Faster grep
 set global grepcmd "%sh{
@@ -20,16 +26,24 @@ set global grepcmd "%sh{
 # Python files
 hook -group custom global BufCreate .*\.py %{
     set buffer lintcmd flake8
-    map buffer normal <a-\> '<a-i>wy:tag <c-r>"<ret>'
+    map buffer normal <a-\> '<a-i>wy:ctags-search <c-r>"<ret>'
     map buffer user l ':lint<ret>:b *lint-output*<ret>'
 }
 
 hook -group custom global BufCreate .*\.js %{
     set buffer lintcmd jshint
-    map buffer normal <a-\> '<a-i>wy:tag <c-r>"<ret>'
+    map buffer normal <a-\> '<a-i>wy:ctags-search <c-r>"<ret>'
     map buffer user l ':lint<ret>:b *lint-output*<ret>'
+}
+
+hook -group custom global BufCreate .*\.(c(pp)?|h) %{
+    map buffer normal <a-\> '<a-i>wy:ctags-search <c-r>"<ret>'
+    map buffer normal <a-backspace> '<a-i>wy:grep \b<c-r>"\b<ret>'
+    map buffer normal <f1> '<a-i>wy:man <c-r>"<ret>/<c-r>"<ret>n'
 }
 
 hook -group custom global BufCreate .*\.jinja2 %{
     set buffer filetype html
 }
+
+hook global BufCreate .* %{editorconfig-load}
