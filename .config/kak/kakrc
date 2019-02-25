@@ -1,4 +1,6 @@
 set global indentwidth 4
+set global ctagscmd "ctags -R --fields=+S --exclude=.git --exclude=depends"
+
 map global insert <tab> '    '
 map global insert <s-tab> '<a-;><lt>'
 map global normal <c-p> ':find '
@@ -6,8 +8,10 @@ map global user w '%s +$<ret>d '
 
 # Fuzzy file finder
 def find -params 1 -override -shell-script-candidates %{
-    find \( -name venv -o -name node_modules -o -name build  -o -name .hg -o -name .travis -o \
-            -name .git -o -name autom4te.cache -o -name build-aux \) -prune -o \
+    find \( -name venv -o -name node_modules -o -name build\*  -o -name .hg -o -name .travis -o \
+            -name .git -o -name autom4te.cache -o -name .deps -o \
+            -name depends -o \
+            -name .idea -o -name \*.o -o -name wallet.dat~\* \) -prune -o \
          -type f ! -name '*.pyc' -print
 } %{ edit %arg{1} }
 
@@ -15,6 +19,17 @@ def find -params 1 -override -shell-script-candidates %{
 def pwd -params 0 -override %{
     echo %sh{pwd}
 }
+
+def dab -params 0 -docstring 'delete all buffers' -override %{
+    evaluate-commands -no-hooks -buffer * %{
+        delete-buffer! %val{bufname}
+    }
+}
+
+# Tmux shortcuts
+map global normal <c-/> ':%sh{tmux last-pane}<ret>'
+map global insert <c-/> ':%sh{tmux last-pane}<ret>'
+map global normal <f12> ':source %val{buffile}<ret>'
 
 # Faster grep
 set global grepcmd "%sh{
@@ -26,20 +41,29 @@ set global grepcmd "%sh{
 # Python files
 hook -group custom global BufCreate .*\.py %{
     set buffer lintcmd flake8
-    map buffer normal <a-\> '<a-i>wy:ctags-search <c-r>"<ret>'
+    map buffer normal <a-\> '<a-i>w"py:ctags-search <c-r>p<ret>'
     map buffer user l ':lint<ret>:b *lint-output*<ret>'
+    map buffer normal <a-backspace> '<a-i>w"py:grep --py \b<c-r>p\b<ret>'
+}
+
+hook -group custom global BufCreate .*\.ts %{
+    set buffer lintcmd jshint
+    map buffer normal <a-\> '<a-i>w"py:ctags-search <c-r>p<ret>'
+    map buffer user l ':lint<ret>:b *lint-output*<ret>'
+    map buffer normal <a-backspace> '<a-i>w"py:grep \b<c-r>p\b<ret>'
 }
 
 hook -group custom global BufCreate .*\.js %{
     set buffer lintcmd jshint
-    map buffer normal <a-\> '<a-i>wy:ctags-search <c-r>"<ret>'
+    map buffer normal <a-\> '<a-i>w"py:ctags-search <c-r>p<ret>'
     map buffer user l ':lint<ret>:b *lint-output*<ret>'
 }
 
 hook -group custom global BufCreate .*\.(c(pp)?|h) %{
-    map buffer normal <a-\> '<a-i>wy:ctags-search <c-r>"<ret>'
-    map buffer normal <a-backspace> '<a-i>wy:grep \b<c-r>"\b<ret>'
-    map buffer normal <f1> '<a-i>wy:man <c-r>"<ret>/<c-r>"<ret>n'
+    map buffer normal <a-\> '<a-i>w"py:ctags-search <c-r>p<ret>'
+    map buffer normal <a-backspace> '<a-i>w"py:grep \b<c-r>p\b<ret>'
+    map buffer normal <f1> '<a-i>w"py:man <c-r>p<ret>/<c-r>p<ret>n'
+    map buffer normal <f9> ':make<ret>'
 }
 
 hook -group custom global BufCreate .*\.jinja2 %{
